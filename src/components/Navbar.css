@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 /* Brand */
@@ -51,60 +51,24 @@
   pointer-events: none;
 }
 
-/* Logo Placeholder */
-.navbar__logo-placeholder {
-  height: 38px;
-  width: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff2da0, #9B2FFF);
-  filter: drop-shadow(0 0 6px rgba(155,47,255,0.45));
-  flex-shrink: 0;
-}
-
 /* Brand wordmark */
 .navbar__brand-name {
-  display: inline-flex;
-  align-items: baseline;
-  margin-left: 10px;
   font-family: var(--font-heading);
-  line-height: 1;
-  letter-spacing: 0.06em;
-  gap: 1px;
-}
-
-.navbar__brand-kreir {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
   color: var(--text-primary);
-  text-transform: uppercase;
-  border-bottom: 1.5px solid rgba(255, 45, 160, 0.65);
-  padding-bottom: 1px;
-}
-
-.navbar__brand-ai {
-  font-size: 1.45rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  background: linear-gradient(90deg, #ff2da0 0%, #5b6cff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.brand-letter {
-  display: inline-block;
 }
 
 /* Desktop nav */
 .navbar__nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.25rem;
 }
 
 .navbar__link {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-secondary);
   transition: color 0.3s ease;
@@ -240,12 +204,7 @@
 }
 
 @media (max-width: 480px) {
-  .navbar__logo-placeholder {
-    height: 32px;
-    width: 32px;
-  }
-  .navbar__brand-kreir { font-size: 0.95rem; }
-  .navbar__brand-ai { font-size: 1.25rem; }
+  .navbar__brand-name { font-size: 1.4rem; }
   .navbar__mobile-nav {
     padding: 1rem 1.25rem;
   }

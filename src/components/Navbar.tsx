@@ -32,20 +32,16 @@ export default function Navbar() {
     { label: 'Participants', href: '/participants' },
     { label: 'Judging', href: '/judging' },
     { label: 'Roles', href: '/roles-tasks' },
+    { label: 'Support', href: '/support' },
+    { label: 'Agency', href: '/about' },
   ]
 
   return (
     <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar__inner">
         <Link to="/" className="navbar__brand" onClick={closeMenu}>
-          <div className="navbar__logo-placeholder"></div>
           <span className="navbar__brand-name">
-            <span className="navbar__brand-kreir">
-              {'HACK'.split('').map((l, i) => <span key={i} className="brand-letter">{l}</span>)}
-            </span>
-            <span className="navbar__brand-ai">
-              {'FLOW'.split('').map((l, i) => <span key={i} className="brand-letter">{l}</span>)}
-            </span>
+            <span className="text-gradient">Hack</span>Flow
           </span>
         </Link>
 
@@ -87,12 +83,6 @@ export default function Navbar() {
               {link.label}
             </NavLink>
           ))}
-          <NavLink to="/support" className="navbar__mobile-link" onClick={closeMenu}>
-            Support
-          </NavLink>
-          <NavLink to="/about" className="navbar__mobile-link" onClick={closeMenu}>
-            Agency
-          </NavLink>
         </nav>
       </div>
     </header>
