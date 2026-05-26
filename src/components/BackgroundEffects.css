@@ -4,10 +4,10 @@
   overflow: hidden;
   pointer-events: none;
   z-index: -1;
-  background-color: #07080a; /* Fallback baseline */
+  background-color: #05070d; /* Baseline Kresai Deep dark space color #05070d */
 }
 
-/* ── Dynamic Floating Blur Orbs ── */
+/* ── Dynamic Floating Kresai Blur Orbs ── */
 .bg-orb {
   position: absolute;
   border-radius: 50%;
@@ -16,10 +16,10 @@
   pointer-events: none;
 }
 
-.orb-indigo {
+.orb-pink {
   width: 800px;
   height: 800px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.24) 0%, rgba(99, 102, 241, 0.06) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(255, 45, 160, 0.24) 0%, rgba(255, 45, 160, 0.06) 45%, transparent 75%);
   top: -200px;
   left: -200px;
   animation: drift-orb-1 45s infinite alternate ease-in-out;
@@ -28,16 +28,16 @@
 .orb-purple {
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, rgba(168, 85, 247, 0.04) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(155, 47, 255, 0.18) 0%, rgba(155, 47, 255, 0.04) 45%, transparent 75%);
   bottom: -200px;
   right: -200px;
   animation: drift-orb-2 38s infinite alternate ease-in-out;
 }
 
-.orb-pink {
+.orb-blue {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.14) 0%, rgba(236, 72, 153, 0.03) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(91, 108, 255, 0.15) 0%, rgba(91, 108, 255, 0.03) 45%, transparent 75%);
   top: 30%;
   left: 45%;
   animation: drift-orb-3 50s infinite alternate ease-in-out;
@@ -55,71 +55,43 @@
   pointer-events: none;
 }
 
-/* ── Top Laser Beam neon accent ── */
+/* ── Top Laser Beam neon accent matching Kresai --gradient-brand ── */
 .neon-top-beam {
   position: absolute;
   top: 0;
   left: 10%;
   width: 80%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.35), rgba(236, 72, 153, 0.25), transparent);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5), 0 0 10px rgba(236, 72, 153, 0.3);
+  background: linear-gradient(90deg, transparent, rgba(255, 45, 160, 0.35), rgba(91, 108, 255, 0.25), transparent);
+  box-shadow: 0 0 20px rgba(255, 45, 160, 0.5), 0 0 10px rgba(91, 108, 255, 0.3);
   animation: beam-pulse 6s infinite alternate ease-in-out;
   opacity: 0.6;
 }
 
 /* ── Keyframe Animations ── */
 @keyframes drift-orb-1 {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(150px, 120px) scale(1.08);
-  }
-  66% {
-    transform: translate(-100px, 200px) scale(0.92);
-  }
-  100% {
-    transform: translate(50px, -50px) scale(1.04);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(150px, 120px) scale(1.08); }
+  66% { transform: translate(-100px, 200px) scale(0.92); }
+  100% { transform: translate(50px, -50px) scale(1.04); }
 }
 
 @keyframes drift-orb-2 {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-180px, -100px) scale(0.88);
-  }
-  100% {
-    transform: translate(100px, -200px) scale(1.12);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-180px, -100px) scale(0.88); }
+  100% { transform: translate(100px, -200px) scale(1.12); }
 }
 
 @keyframes drift-orb-3 {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(-80px, 80px) scale(1.08);
-  }
-  66% {
-    transform: translate(120px, -60px) scale(0.96);
-  }
-  100% {
-    transform: translate(-40px, -40px) scale(1.04);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-80px, 80px) scale(1.08); }
+  66% { transform: translate(120px, -60px) scale(0.96); }
+  100% { transform: translate(-40px, -40px) scale(1.04); }
 }
 
 @keyframes beam-pulse {
-  0% {
-    opacity: 0.35;
-    transform: scaleX(0.95);
-  }
-  100% {
-    opacity: 0.75;
-    transform: scaleX(1.05);
-  }
+  0% { opacity: 0.35; transform: scaleX(0.95); }
+  100% { opacity: 0.75; transform: scaleX(1.05); }
 }
 
 /* Mobile Optimizations */
@@ -127,7 +99,7 @@
   .bg-orb {
     filter: blur(100px);
   }
-  .orb-indigo {
+  .orb-pink {
     width: 400px;
     height: 400px;
   }
@@ -135,7 +107,7 @@
     width: 350px;
     height: 350px;
   }
-  .orb-pink {
+  .orb-blue {
     width: 300px;
     height: 300px;
   }

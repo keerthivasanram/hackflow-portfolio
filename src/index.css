@@ -4,21 +4,21 @@
    DESIGN TOKENS
    ============================================ */
 :root {
-  /* Colors */
-  --bg-dark: #07080a;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-glass: rgba(7, 8, 10, 0.7);
-  --border-glass: rgba(255, 255, 255, 0.07);
+  /* Colors - Coordinated with Kresai premium cyber-neon brand */
+  --bg-dark: #05070d;
+  --bg-card: rgba(17, 24, 39, 0.65);
+  --bg-glass: rgba(10, 13, 26, 0.7);
+  --border-glass: rgba(155, 47, 255, 0.18);
 
   --text-primary: #f1f5f9;
-  --text-secondary: #64748b;
-  --text-muted: #334155;
+  --text-secondary: #a0a0b0;
+  --text-muted: #5a6280;
 
-  --accent-primary: #6366f1;
-  --accent-secondary: #a855f7;
-  --accent-tertiary: #ec4899;
-  --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
-  --accent-glow: rgba(99, 102, 241, 0.35);
+  --accent-primary: #5b6cff;
+  --accent-secondary: #9B2FFF;
+  --accent-tertiary: #ff2da0;
+  --accent-gradient: linear-gradient(135deg, #ff2da0, #9B2FFF, #5b6cff);
+  --accent-glow: rgba(155, 47, 255, 0.35);
 
   /* Spacing Scale */
   --space-1: 4px;
@@ -54,7 +54,10 @@
   box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+}
 
 body {
   background-color: transparent;
@@ -65,18 +68,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-html {
-  background-color: var(--bg-dark);
-}
-
-
-/* Dynamic Background System is handled by the BackgroundEffects component */
-
-
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   line-height: 1.2;
   color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+p, span, a, li, select, input, textarea, button {
+  letter-spacing: -0.01em;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -147,7 +147,7 @@ main {
 .page-header h1 {
   font-size: 2.8rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.04em;
   margin-bottom: var(--space-4);
 }
 
@@ -201,7 +201,7 @@ main {
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 18px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 18px rgba(155, 47, 255, 0.3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -210,7 +210,7 @@ main {
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 28px rgba(99, 102, 241, 0.45);
+  box-shadow: 0 4px 28px rgba(155, 47, 255, 0.45);
   background-position: right center;
 }
 .btn-primary:disabled {
@@ -272,7 +272,7 @@ main {
   color: var(--text-primary);
 }
 .sidebar-item.active {
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(155, 47, 255, 0.12);
   color: white;
   border-left: 2px solid var(--accent-primary);
   padding-left: calc(var(--space-4) - 2px);
