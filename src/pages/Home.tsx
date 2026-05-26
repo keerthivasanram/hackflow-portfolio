@@ -1,15 +1,16 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { ArrowRight, Users, Zap, Trophy, BarChart2, Shield, Headphones, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import './Home.css'
 
 const FEATURES = [
-  { icon: BarChart2, title: 'Master Dashboard', desc: 'Real-time KPIs, live activity feeds, and data filters at your fingertips.', link: '/dashboard', color: '#6366f1' },
-  { icon: Zap, title: 'For Organizers', desc: 'Launch hackathons instantly. Configure rules, dates, and publish to the world.', link: '/organizers', color: '#f59e0b' },
-  { icon: Users, title: 'For Participants', desc: 'Form teams, invite collaborators, and submit projects with a drag-and-drop uploader.', link: '/participants', color: '#3b82f6' },
-  { icon: Trophy, title: 'Judging System', desc: 'Multi-criteria scoring with a live leaderboard that updates in real time.', link: '/judging', color: '#10b981' },
-  { icon: Shield, title: 'Roles & Tasks', desc: 'Granular permission controls and an interactive Kanban task board.', link: '/roles-tasks', color: '#a855f7' },
-  { icon: Headphones, title: 'World-Class Support', desc: 'Built-in helpdesk with live chat, ticket management, and priority triage.', link: '/support', color: '#ec4899' },
+  { icon: BarChart2, title: 'Master Dashboard', desc: 'Real-time KPIs, live activity feeds, and data filters at your fingertips.', link: '/dashboard', color: '#5b6cff' },
+  { icon: Zap, title: 'For Organizers', desc: 'Launch hackathons instantly. Configure rules, dates, and publish to the world.', link: '/organizers', color: '#ff2da0' },
+  { icon: Users, title: 'For Participants', desc: 'Form teams, invite collaborators, and submit projects with a drag-and-drop uploader.', link: '/participants', color: '#9B2FFF' },
+  { icon: Trophy, title: 'Judging System', desc: 'Multi-criteria scoring with a live leaderboard that updates in real time.', link: '/judging', color: '#22c55e' },
+  { icon: Shield, title: 'Roles & Tasks', desc: 'Granular permission controls and an interactive Kanban task board.', link: '/roles-tasks', color: '#5b6cff' },
+  { icon: Headphones, title: 'World-Class Support', desc: 'Built-in helpdesk with live chat, ticket management, and priority triage.', link: '/support', color: '#ff2da0' },
 ]
 
 const containerVariants = {
@@ -22,82 +23,95 @@ const cardVariants = {
 }
 
 export default function Home() {
+  const heroRef = useRef(null)
+  const heroVisible = useInView(heroRef, { once: true, margin: '-15%' })
+
   return (
     <>
-      {/* ── HERO ─────────────────────────────── */}
-      <section className="home-hero">
-        <div className="home-hero-inner">
-          <motion.div
-            className="hero-badge"
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-          >
-            <Sparkles size={14} /> HackFlow Platform v1.0
-          </motion.div>
+      {/* ── HERO (KRESAI DESIGN) ─────────────────────────────── */}
+      <section className="hero" id="home" ref={heroRef}>
+        <div className="hero__bg-glow hero__bg-glow--pink" />
+        <div className="hero__bg-glow hero__bg-glow--purple" />
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Empower the Next Generation<br />of <span className="text-gradient">Innovation</span>
-          </motion.h1>
+        <div className="hero__container hero__grid">
+          {/* Left: Text */}
+          <div className="hero__text">
+            <div className={`section-label anim-fade-up stagger-1 ${heroVisible ? 'visible' : ''}`}>
+              <Sparkles size={14} style={{ display: 'inline-block', marginRight: '6px' }} />
+              HACKFLOW PLATFORM V1.0
+            </div>
 
-          <motion.p
-            className="hero-subtitle"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            The complete hackathon management platform — from team formation and live scoring to role-based access and world-class support. All in one place.
-          </motion.p>
+            <h1 className={`hero__heading anim-fade-up stagger-2 ${heroVisible ? 'visible' : ''}`}>
+              Empower the Next Generation<br />
+              <span className="text-gradient">of Innovation</span>
+            </h1>
 
-          <motion.div
-            className="hero-cta"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-          >
-            <Link to="/organizers" className="btn-primary">
-              Get Started <ArrowRight size={16} />
-            </Link>
-            <Link to="/dashboard" className="btn-secondary">
-              View Dashboard
-            </Link>
-          </motion.div>
+            <p className={`hero__subtext anim-fade-up stagger-3 ${heroVisible ? 'visible' : ''}`}>
+              The complete hackathon management platform — from team formation and live scoring to role-based access and world-class support. All in one place.
+            </p>
 
-          {/* Floating notification cards */}
-          <div className="hero-float-group">
-            <motion.div
-              className="hero-float-card glass-panel fc-1"
-              animate={{ y: [0, -14, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Trophy size={18} color="gold" />
-              <span>Leaderboard Updated</span>
-            </motion.div>
-            <motion.div
-              className="hero-float-card glass-panel fc-2"
-              animate={{ y: [0, 18, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            >
-              <Users size={18} color="#a855f7" />
-              <span>48 Teams Registered</span>
-            </motion.div>
-            <motion.div
-              className="hero-float-card glass-panel fc-3"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            >
-              <Zap size={18} color="#ec4899" />
-              <span>Event Live!</span>
-            </motion.div>
+            <div className={`hero__cta anim-fade-up stagger-4 ${heroVisible ? 'visible' : ''}`}>
+              <Link to="/organizers" className="btn-primary">
+                Get Started
+                <ArrowRight size={16} />
+              </Link>
+              <Link to="/dashboard" className="hero__link">
+                View Dashboard
+              </Link>
+            </div>
+
+            <div className={`hero__stats anim-fade-up stagger-5 ${heroVisible ? 'visible' : ''}`}>
+              <div className="hero__stat">
+                <span className="hero__stat-num text-gradient">100+</span>
+                <span className="hero__stat-label">Hackathons</span>
+              </div>
+              <div className="hero__stat-divider" />
+              <div className="hero__stat">
+                <span className="hero__stat-num text-gradient">50k+</span>
+                <span className="hero__stat-label">Builders</span>
+              </div>
+              <div className="hero__stat-divider" />
+              <div className="hero__stat">
+                <span className="hero__stat-num text-gradient">99%</span>
+                <span className="hero__stat-label">Uptime</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Visual */}
+          <div className={`hero__visual anim-slide-right stagger-2 ${heroVisible ? 'visible' : ''}`}>
+            <div className="hero__orb hero__orb--1" />
+            <div className="hero__orb hero__orb--2" />
+            <div className="hero__orb hero__orb--3" />
+
+            <div className="hero__card hero__card--main glass-panel">
+              <div className="hero__card-icon">
+                <Trophy size={22} color="#facc15" />
+              </div>
+              <span className="hero__card-label">Leaderboard</span>
+              <span className="hero__card-value text-gradient">Updated</span>
+            </div>
+
+            <div className="hero__card hero__card--secondary glass-panel">
+              <div className="hero__card-dot" />
+              <span className="hero__card-label">Event Status</span>
+              <span className="hero__card-value text-gradient">Live</span>
+            </div>
+
+            <div className="hero__card hero__card--tertiary glass-panel">
+              <span className="hero__card-label">Teams Registered</span>
+              <div className="hero__progress">
+                <div className="hero__progress-bar" />
+              </div>
+              <span className="hero__card-value text-gradient">48 / 50</span>
+            </div>
           </div>
         </div>
 
-        {/* Bottom gradient fade */}
-        <div className="hero-fade" />
+        <div className="hero__scroll">
+          <div className="hero__scroll-line" />
+          <span>Scroll</span>
+        </div>
       </section>
 
       {/* ── TECH MARQUEE ─────────────────────── */}

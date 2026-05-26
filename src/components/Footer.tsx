@@ -5,59 +5,53 @@ import './Footer.css'
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="footer-inner">
-        {/* Top row */}
-        <div className="footer-top">
-          <div className="footer-brand">
-            <div className="footer-logo">
-              <span className="text-gradient">Hack</span>Flow
-            </div>
-            <p className="footer-tagline">
-              The complete hackathon management platform — built by SparkInventive.
-            </p>
-            <div className="footer-social">
-              <a href="#" aria-label="Website"><Globe size={18} /></a>
-              <a href="#" aria-label="Email"><Mail size={18} /></a>
-              <a href="#" aria-label="Chat"><MessageSquare size={18} /></a>
-            </div>
-          </div>
-
-          <div className="footer-nav">
-            <div className="footer-col">
-              <h5>Product</h5>
-              <Link to="/dashboard">Dashboard</Link>
-              <Link to="/organizers">Organizers</Link>
-              <Link to="/participants">Participants</Link>
-              <Link to="/judging">Judging</Link>
-              <Link to="/roles-tasks">Roles & Tasks</Link>
-              <Link to="/support">Support</Link>
-            </div>
-            <div className="footer-col">
-              <h5>Resources</h5>
-              <Link to="/">Documentation</Link>
-              <Link to="/">API Reference</Link>
-              <Link to="/">Blog</Link>
-              <Link to="/">Community</Link>
-            </div>
-            <div className="footer-col">
-              <h5>Company</h5>
-              <Link to="/about">About Us</Link>
-              <Link to="/">Careers</Link>
-              <Link to="/">Privacy Policy</Link>
-              <Link to="/support">Contact</Link>
-            </div>
+      <div className="footer__top-line" />
+      <div className="container footer__inner">
+        <div className="footer__brand">
+          <Link to="/" className="footer__logo-link">
+             <span className="footer__name"><span className="text-gradient">Hack</span>Flow</span>
+          </Link>
+          <p className="footer__tagline">
+            The complete hackathon management platform — built by SparkInventive.
+          </p>
+          <div className="footer__social">
+            <a href="#" aria-label="Website"><Globe size={18} /></a>
+            <a href="#" aria-label="Email"><Mail size={18} /></a>
+            <a href="#" aria-label="Chat"><MessageSquare size={18} /></a>
           </div>
         </div>
 
-        {/* Bottom row */}
-        <div className="footer-bottom">
-          <span>© 2026 HackFlow · Built by <span className="text-gradient">SparkInventive</span></span>
-          <div className="footer-legal">
-            <Link to="/">Terms</Link>
-            <Link to="/">Privacy</Link>
-            <Link to="/">Cookies</Link>
+        <nav className="footer__nav" aria-label="Footer">
+          <div className="footer__col">
+            <h5>Product</h5>
+            <Link to="/dashboard" className="footer__link">Dashboard</Link>
+            <Link to="/organizers" className="footer__link">Organizers</Link>
+            <Link to="/participants" className="footer__link">Participants</Link>
+            <Link to="/judging" className="footer__link">Judging</Link>
+            <Link to="/roles-tasks" className="footer__link">Roles & Tasks</Link>
           </div>
-        </div>
+          <div className="footer__col">
+            <h5>Resources</h5>
+            <Link to="/support" className="footer__link">Support</Link>
+            <Link to="/" className="footer__link">Documentation</Link>
+            <Link to="/" className="footer__link">API Reference</Link>
+          </div>
+          <div className="footer__col">
+            <h5>Company</h5>
+            <Link to="/about" className="footer__link">About Us</Link>
+            <Link to="/" className="footer__link">Privacy Policy</Link>
+            <Link to="/support" className="footer__link">Contact</Link>
+          </div>
+        </nav>
+      </div>
+
+      <div className="container footer__bottom">
+        <span className="footer__copy">
+          &copy; {new Date().getFullYear()} HackFlow. All rights reserved.
+        </span>
+        <span className="footer__built text-gradient">
+          Built by SparkInventive
+        </span>
       </div>
     </footer>
   )
