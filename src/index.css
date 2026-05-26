@@ -57,7 +57,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--bg-dark);
+  background-color: transparent;
   color: var(--text-primary);
   font-family: var(--font-body);
   line-height: 1.65;
@@ -65,18 +65,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle fixed background grid */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 15% 25%, rgba(99, 102, 241, 0.1), transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(168, 85, 247, 0.09), transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.06), transparent 55%);
-  pointer-events: none;
-  z-index: 0;
+html {
+  background-color: var(--bg-dark);
 }
+
+
+/* Dynamic Background System is handled by the BackgroundEffects component */
+
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);

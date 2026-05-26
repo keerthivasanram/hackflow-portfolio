@@ -11,6 +11,7 @@ import Support from './pages/Support'
 import RolesAndTasks from './pages/RolesAndTasks'
 import About from './pages/About'
 import ScrollToTop from './components/ScrollToTop'
+import BackgroundEffects from './components/BackgroundEffects'
 
 function App() {
   const location = useLocation();
@@ -18,6 +19,7 @@ function App() {
   return (
     <div className="app-container">
       <ScrollToTop />
+      <BackgroundEffects />
       <Navbar />
       <main>
         <AnimatePresence mode="wait">

@@ -1,0 +1,147 @@
+.bg-effects-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+  background-color: #07080a; /* Fallback baseline */
+}
+
+/* ── Dynamic Floating Blur Orbs ── */
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  will-change: transform;
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+}
+
+.orb-indigo {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.03) 50%, transparent 80%);
+  top: -150px;
+  left: -150px;
+  animation: drift-orb-1 45s infinite alternate ease-in-out;
+}
+
+.orb-purple {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.11) 0%, rgba(168, 85, 247, 0.02) 50%, transparent 80%);
+  bottom: -150px;
+  right: -150px;
+  animation: drift-orb-2 38s infinite alternate ease-in-out;
+}
+
+.orb-pink {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.07) 0%, rgba(236, 72, 153, 0.01) 50%, transparent 80%);
+  top: 30%;
+  left: 45%;
+  animation: drift-orb-3 50s infinite alternate ease-in-out;
+}
+
+/* ── Grid dot pattern matrix overlay ── */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 20%, rgba(0,0,0,0.5) 60%, transparent 95%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, rgba(0,0,0,0.5) 60%, transparent 95%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* ── Top Laser Beam neon accent ── */
+.neon-top-beam {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.35), rgba(236, 72, 153, 0.25), transparent);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5), 0 0 10px rgba(236, 72, 153, 0.3);
+  animation: beam-pulse 6s infinite alternate ease-in-out;
+  opacity: 0.6;
+}
+
+/* ── Keyframe Animations ── */
+@keyframes drift-orb-1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(150px, 120px) scale(1.08);
+  }
+  66% {
+    transform: translate(-100px, 200px) scale(0.92);
+  }
+  100% {
+    transform: translate(50px, -50px) scale(1.04);
+  }
+}
+
+@keyframes drift-orb-2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-180px, -100px) scale(0.88);
+  }
+  100% {
+    transform: translate(100px, -200px) scale(1.12);
+  }
+}
+
+@keyframes drift-orb-3 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-80px, 80px) scale(1.08);
+  }
+  66% {
+    transform: translate(120px, -60px) scale(0.96);
+  }
+  100% {
+    transform: translate(-40px, -40px) scale(1.04);
+  }
+}
+
+@keyframes beam-pulse {
+  0% {
+    opacity: 0.35;
+    transform: scaleX(0.95);
+  }
+  100% {
+    opacity: 0.75;
+    transform: scaleX(1.05);
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .bg-orb {
+    filter: blur(100px);
+  }
+  .orb-indigo {
+    width: 400px;
+    height: 400px;
+  }
+  .orb-purple {
+    width: 350px;
+    height: 350px;
+  }
+  .orb-pink {
+    width: 300px;
+    height: 300px;
+  }
+  .grid-overlay {
+    background-size: 24px 24px;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1.2px, transparent 1.2px);
+  }
+}
