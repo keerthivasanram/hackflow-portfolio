@@ -1,0 +1,92 @@
+.mock-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.lb-row.gold {
+  background: rgba(250, 204, 21, 0.1);
+  border-color: rgba(250, 204, 21, 0.3);
+  color: #facc15;
+}
+.lb-row.silver {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: rgba(148, 163, 184, 0.3);
+  color: #cbd5e1;
+}
+.lb-row.bronze {
+  background: rgba(180, 83, 9, 0.1);
+  border-color: rgba(180, 83, 9, 0.3);
+  color: #f59e0b;
+}
+
+.rank {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 60px;
+}
+
+.team {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.score {
+  font-family: var(--font-mono);
+}
+
+.score-panel {
+  width: 320px;
+}
+
+.mock-slider-group {
+  margin-bottom: 20px;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.slider-val {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-primary);
+}
+
+.slider-track {
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.slider-fill {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 4px;
+}
+
+.w-full {
+  width: 100%;
+}
+.mt-4 {
+  margin-top: 24px;
+}

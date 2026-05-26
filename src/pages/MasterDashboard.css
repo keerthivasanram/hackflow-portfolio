@@ -1,0 +1,111 @@
+.dashboard-page {
+  padding-bottom: 80px;
+}
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+}
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  width: 100%;
+  cursor: pointer;
+}
+.kpi-card {
+  padding: var(--space-5) var(--space-6);
+}
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.kpi-icon { color: var(--accent-primary); }
+.kpi-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.kpi-value {
+  font-size: 1.9rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  letter-spacing: -0.5px;
+}
+.kpi-trend {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.charts-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-6);
+  width: 100%;
+}
+.chart-panel, .feed-panel {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+}
+.chart-panel h3, .feed-panel h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.mock-bar-chart {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-glass);
+  min-height: 200px;
+  margin-top: var(--space-5);
+}
+.bar {
+  width: 36px;
+  background: var(--accent-gradient);
+  border-radius: 5px 5px 0 0;
+  opacity: 0.85;
+}
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  flex: 1;
+  overflow-y: auto;
+  margin-top: var(--space-5);
+}
+.feed-item {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+.feed-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.feed-content { display: flex; flex-direction: column; gap: 2px; }
+.feed-text { font-size: 0.88rem; color: var(--text-primary); }
+.feed-time { font-size: 0.78rem; color: var(--text-secondary); }
+
+@media (max-width: 1000px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .charts-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .kpi-row { grid-template-columns: 1fr; }
+}
