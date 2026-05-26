@@ -1,171 +1,624 @@
-.roles-grid {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 24px;
-  align-items: start;
+/* ── Layout Segmented Tab Selector ── */
+.segmented-control-wrapper {
+  display: flex;
+  justify-content: center;
   width: 100%;
+  margin-bottom: 32px;
 }
-.role-builder, .kanban-board {
-  padding: 28px;
+
+.segmented-control {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 30px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.control-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 20px;
+  position: relative;
+  transition: color 0.25s ease;
+  font-family: var(--font-heading);
+  outline: none;
+}
+
+.control-btn:hover {
+  color: var(--text-primary);
+}
+
+.control-btn.active {
+  color: #ffffff;
+}
+
+.control-btn .active-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  z-index: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn span, 
+.control-btn svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Dual Panel Layout (Roles & Permissions) ── */
+.rt-layout-container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  width: 100%;
+  align-items: start;
+}
+
+.roles-main-panel,
+.roles-side-panel {
+  padding: var(--space-6);
+  min-height: 520px;
   display: flex;
   flex-direction: column;
 }
-.role-builder h3, .kanban-board h3 {
+
+/* Panel Header Info */
+.panel-header-section {
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.panel-header-section.padding-x-y {
+  padding: var(--space-5) var(--space-6) 18px var(--space-6);
+  margin-bottom: 24px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.panel-title h2 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.title-icon {
+  color: #818cf8; /* Muted brand indigo */
+}
+
+.panel-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ── Clean Monochrome Table Styling ── */
+.clean-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.clean-member-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.clean-member-table th {
+  padding: 12px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.clean-member-table td {
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+}
+
+.clean-member-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.clean-member-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+/* Member Cells */
+.member-info {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 0;
-  color: white;
 }
-.member-list {
+
+.member-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.member-avatar.sm {
+  width: 22px;
+  height: 22px;
+  font-size: 0.7rem;
+}
+
+.member-fullname {
+  font-weight: 500;
+}
+
+.td-email {
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+/* Custom Styled Native Dropdown */
+.role-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 13px;
+  padding: 6px 36px 6px 12px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+.role-select:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.role-select option {
+  background-color: #0c0e12;
+  color: var(--text-primary);
+}
+
+/* ── Permissions Side Matrix ── */
+.role-subtabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  flex-wrap: wrap;
+}
+
+.role-subtab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+  outline: none;
+}
+
+.role-subtab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.role-subtab-btn.active {
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.permissions-matrix {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 24px;
 }
-.member-row {
+
+.permission-row-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 10px;
-  border: 1px solid var(--border-glass);
-}
-.member-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.member-name {
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-.role-select {
-  padding: 5px 10px;
+  padding: 12px 16px;
   border-radius: 8px;
-  border: 1px solid;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.03);
   cursor: pointer;
-  outline: none;
-}
-.permission-section {
-  border-top: 1px solid var(--border-glass);
-  padding-top: 20px;
-}
-.permissions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.permission-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: rgba(255,255,255,0.02);
-  border-radius: 8px;
-  border: 1px solid var(--border-glass);
-  transition: background 0.2s;
-  font-size: 0.9rem;
-}
-.toggle-switch {
-  width: 44px;
-  height: 24px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.toggle-switch.active {
-  background: var(--accent-primary);
-}
-.toggle-knob {
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  user-select: none;
 }
 
-.kanban-columns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-top: 20px;
+.permission-row-item:hover {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.06);
 }
-.kanban-col {
-  background: rgba(0,0,0,0.25);
-  border-radius: 12px;
-  padding: 14px;
+
+.permission-info-cell {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 200px;
+  gap: 2px;
+  padding-right: 12px;
 }
-.kanban-col h4 {
-  font-size: 0.85rem;
-  margin-bottom: 4px;
+
+.permission-name-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.permission-desc-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+/* Custom Sleek Switch Toggle */
+.switch-toggle-outer {
+  width: 34px;
+  height: 18px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.switch-toggle-outer.active {
+  background: #6366f1;
+  border-color: #818cf8;
+}
+
+.switch-toggle-knob {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.panel-action-footer {
+  margin-top: auto;
+}
+
+.save-btn-full {
+  width: 100%;
+  padding: 12px !important;
+  font-size: 0.9rem !important;
+  transition: background 0.3s ease;
+}
+
+.save-btn-full.saved {
+  background: #10b981 !important;
+  box-shadow: none;
+}
+
+/* ── Full Width Kanban Task Board Panel ── */
+.tasks-layout-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* Quick Add Task Bar */
+.sprint-add-task-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 var(--space-6) 24px var(--space-6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  flex-wrap: wrap;
+}
+
+.input-group-field {
+  flex: 1;
+  min-width: 240px;
+}
+
+.task-input-field {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.task-input-field:focus {
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.task-input-field::placeholder {
+  color: var(--text-secondary);
+}
+
+.select-assignee-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-label-tag {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sprint-add-btn {
+  padding: 10px 20px !important;
+  font-size: 0.88rem !important;
+  border-radius: 8px !important;
+}
+
+/* Kanban Columns Grid */
+.sprint-kanban-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: var(--space-6);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sprint-column-panel {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 480px;
+}
+
+/* Column Header Status Accents */
+.sprint-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.column-title-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.column-title-label h3 {
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: var(--text-primary);
+  margin: 0;
 }
-.task-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border-glass);
-  border-radius: 10px;
-  padding: 12px;
-  display: flex;
-  gap: 8px;
-  cursor: grab;
-  transition: border-color 0.2s;
+
+.dot-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
-.task-card:hover {
-  border-color: rgba(99,102,241,0.4);
+
+.col-accent-todo .dot-indicator {
+  background: #818cf8; /* Blue */
 }
-.task-drag-handle {
+
+.col-accent-inprogress .dot-indicator {
+  background: #fbbf24; /* Warning Amber */
+}
+
+.col-accent-done .dot-indicator {
+  background: #34d399; /* Success Emerald */
+}
+
+.task-count-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--text-secondary);
-  cursor: grab;
-  padding-top: 2px;
-  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 1px 8px;
+  min-width: 22px;
+  text-align: center;
 }
-.task-content {
-  flex: 1;
-  min-width: 0;
+
+/* Cards Area */
+.sprint-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
 }
-.task-title {
-  font-size: 0.9rem;
+
+.column-empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 32px 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  border: 1px dashed rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+/* Sprint Task Card */
+.sprint-task-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.sprint-task-card:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.sprint-card-title {
+  font-size: 0.85rem;
   font-weight: 500;
-  margin-bottom: 4px;
-  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  line-height: 1.45;
 }
-.task-assignee {
+
+.sprint-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sprint-card-assignee {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-.avatar-small {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--accent-secondary);
-  flex-shrink: 0;
 }
 
-@media (max-width: 900px) {
-  .roles-grid {
+.assignee-name {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.sprint-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sprint-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.sprint-action-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.sprint-action-btn.fwd:hover {
+  color: #a5b4fc;
+}
+
+.sprint-action-btn.del:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
+}
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 1080px) {
+  .rt-layout-container {
     grid-template-columns: 1fr;
   }
-  .kanban-columns {
+  
+  .roles-main-panel,
+  .roles-side-panel {
+    min-height: auto;
+  }
+  
+  .sprint-kanban-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .sprint-column-panel {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .roles-main-panel,
+  .roles-side-panel {
+    padding: var(--space-4);
+  }
+  
+  .sprint-add-task-bar {
+    padding: 0 var(--space-4) 20px var(--space-4);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .input-group-field {
+    min-width: 100%;
+  }
+  
+  .select-assignee-group {
+    justify-content: space-between;
+  }
+  
+  .sprint-kanban-grid {
+    padding: var(--space-4);
   }
 }

@@ -1,257 +1,355 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { UserCog, Shield, CheckSquare, GripVertical, Plus, Trash2, CheckCircle2 } from 'lucide-react'
+import { Shield, CheckSquare, Plus, Trash2, CheckCircle2, ChevronRight, UserCog, User, Key } from 'lucide-react'
 import './RolesAndTasks.css'
 
 const ROLES = [
-  { id: 'lead-judge', label: 'Lead Judge', color: '#6366f1' },
-  { id: 'organizer', label: 'Organizer', color: '#10b981' },
-  { id: 'mentor', label: 'Mentor', color: '#f59e0b' },
-  { id: 'volunteer', label: 'Volunteer', color: '#ec4899' },
+  { id: 'lead-judge',  label: 'Lead Judge' },
+  { id: 'organizer',  label: 'Organizer'  },
+  { id: 'mentor',     label: 'Mentor'     },
+  { id: 'volunteer',  label: 'Volunteer'  },
 ]
 
-const MEMBERS = [
-  { id: 1, name: 'Alex', roleId: 'lead-judge' },
-  { id: 2, name: 'Sarah', roleId: 'organizer' },
-  { id: 3, name: 'Mike', roleId: 'mentor' },
-  { id: 4, name: 'Jordan', roleId: 'volunteer' },
+const PERMISSIONS = [
+  { key: 'view',     label: 'View Submissions',  description: 'Can view participant project entries.' },
+  { key: 'score',    label: 'Submit Scores',     description: 'Can assign multi-dimensional marks.' },
+  { key: 'manage',   label: 'Manage Members',    description: 'Can invite or change user roles.' },
+  { key: 'edit',     label: 'Edit Event Rules',  description: 'Can customize timeline and rubrics.' },
+  { key: 'analytics',label: 'Access Analytics',  description: 'Can view registration and judging charts.' },
+]
+
+const ROLE_PERMISSIONS: Record<string, string[]> = {
+  'lead-judge': ['view', 'score', 'manage', 'analytics'],
+  'organizer':  ['view', 'manage', 'edit', 'analytics'],
+  'mentor':     ['view'],
+  'volunteer':  [],
+}
+
+const INITIAL_MEMBERS = [
+  { id: 1, name: 'Alex Rivera',    roleId: 'lead-judge', email: 'alex@hackflow.dev' },
+  { id: 2, name: 'Sarah Chen',     roleId: 'organizer',  email: 'sarah@hackflow.dev' },
+  { id: 3, name: 'Mike Sterling',  roleId: 'mentor',     email: 'mike@hackflow.dev' },
+  { id: 4, name: 'Jordan Vance',   roleId: 'volunteer',  email: 'jordan@hackflow.dev' },
+]
+
+const INITIAL_TASKS = [
+  { id: 1, title: 'Review sponsor pitch decks',   assignee: 'Sarah Chen',    status: 'todo'       },
+  { id: 2, title: 'Setup judging rubrics',        assignee: 'Mike Sterling', status: 'todo'       },
+  { id: 3, title: 'Email accepted teams & guides', assignee: 'Alex Rivera',   status: 'inprogress' },
+  { id: 4, title: 'Design event promotional banner', assignee: 'Jordan Vance',  status: 'inprogress' },
+  { id: 5, title: 'Publish main landing page',    assignee: 'Alex Rivera',   status: 'done'       },
+]
+
+const COLUMNS = [
+  { id: 'todo',       label: 'To Do'      },
+  { id: 'inprogress', label: 'In Progress'},
+  { id: 'done',       label: 'Done'       },
 ]
 
 export default function RolesAndTasks() {
-  const [members, setMembers] = useState(MEMBERS)
+  const [activeTab, setActiveTab] = useState<'roles' | 'tasks'>('roles')
+  const [members, setMembers]     = useState(INITIAL_MEMBERS)
   const [selectedRole, setSelectedRole] = useState('lead-judge')
-  const [saved, setSaved] = useState(false)
-  const [tasks, setTasks] = useState([
-    { id: 1, title: 'Review sponsor deck', assignee: 'Sarah', status: 'todo' },
-    { id: 2, title: 'Setup judging rubrics', assignee: 'Mike', status: 'todo' },
-    { id: 3, title: 'Email accepted teams', assignee: 'Alex', status: 'inprogress' },
-    { id: 4, title: 'Design event banner', assignee: 'Jordan', status: 'inprogress' },
-    { id: 5, title: 'Publish landing page', assignee: 'Alex', status: 'done' },
-  ])
-  const [newTask, setNewTask] = useState('')
-  const [newAssignee, setNewAssignee] = useState('Alex')
+  const [perms, setPerms]         = useState(ROLE_PERMISSIONS)
+  const [saved, setSaved]         = useState(false)
+  const [tasks, setTasks]         = useState(INITIAL_TASKS)
+  const [newTask, setNewTask]     = useState('')
+  const [newAssignee, setNewAssignee] = useState('Alex Rivera')
 
-  const roleColors: Record<string, string> = Object.fromEntries(ROLES.map(r => [r.id, r.color]))
+  /* ── handlers ── */
+  const assignRole = (id: number, roleId: string) =>
+    setMembers(p => p.map(m => m.id === id ? { ...m, roleId } : m))
 
-  const assignRole = (memberId: number, roleId: string) => {
-    setMembers(prev => prev.map(m => m.id === memberId ? { ...m, roleId } : m))
+  const togglePerm = (roleId: string, key: string) => {
+    setPerms(p => {
+      const cur = p[roleId] ?? []
+      return { ...p, [roleId]: cur.includes(key) ? cur.filter(k => k !== key) : [...cur, key] }
+    })
   }
 
-  const moveTask = (taskId: number, newStatus: string) => {
-    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus } : t))
-  }
+  const hasPerm = (roleId: string, key: string) => (perms[roleId] ?? []).includes(key)
 
-  const deleteTask = (taskId: number) => {
-    setTasks(prev => prev.filter(t => t.id !== taskId))
-  }
+  const moveTask = (id: number, status: string) =>
+    setTasks(p => p.map(t => t.id === id ? { ...t, status } : t))
+
+  const deleteTask = (id: number) =>
+    setTasks(p => p.filter(t => t.id !== id))
 
   const addTask = () => {
     if (!newTask.trim()) return
-    setTasks(prev => [...prev, { id: Date.now(), title: newTask, assignee: newAssignee, status: 'todo' }])
+    setTasks(p => [...p, { id: Date.now(), title: newTask, assignee: newAssignee, status: 'todo' }])
     setNewTask('')
   }
 
-  const handleSave = () => {
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
-  }
+  const handleSave = () => { setSaved(true); setTimeout(() => setSaved(false), 2000) }
 
-  const tasksByStatus = (status: string) => tasks.filter(t => t.status === status)
+  const tasksByStatus = (s: string) => tasks.filter(t => t.status === s)
 
   return (
     <div className="page-container roles-page">
       <motion.div
         className="page-header"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
       >
         <h1 className="text-gradient">Roles & Tasks</h1>
-        <p>Granular access control and intuitive task management. Assign the right jobs to the right people.</p>
+        <p>Manage team permissions and track work with a drag-and-drop task board.</p>
       </motion.div>
 
-      <div className="virtual-ui-container roles-grid">
-        {/* Role Assignment Panel */}
-        <motion.div
-          className="glass-panel role-builder"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h3><Shield size={20} /> Role Assignment</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '20px' }}>
-            Click a member to reassign their role
-          </p>
-
-          <div className="member-list">
-            {members.map((m, i) => {
-              const role = ROLES.find(r => r.id === m.roleId)
-              return (
-                <motion.div
-                  key={m.id}
-                  className="member-row"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                >
-                  <div className="member-info">
-                    <div className="avatar-small" style={{ background: role?.color }} />
-                    <span className="member-name">{m.name}</span>
-                  </div>
-                  <select
-                    className="role-select"
-                    value={m.roleId}
-                    onChange={e => assignRole(m.id, e.target.value)}
-                    style={{ borderColor: role?.color }}
-                  >
-                    {ROLES.map(r => (
-                      <option key={r.id} value={r.id}>{r.label}</option>
-                    ))}
-                  </select>
-                </motion.div>
-              )
-            })}
-          </div>
-
-          <div className="permission-section">
-            <h4 style={{ marginBottom: '12px', color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Permissions for: <span style={{ color: ROLES.find(r => r.id === selectedRole)?.color }}>{ROLES.find(r => r.id === selectedRole)?.label}</span>
-            </h4>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
-              {ROLES.map(r => (
-                <button
-                  key={r.id}
-                  onClick={() => setSelectedRole(r.id)}
-                  style={{
-                    padding: '4px 12px', borderRadius: '20px', border: `1px solid ${r.color}`,
-                    background: selectedRole === r.id ? r.color : 'transparent',
-                    color: selectedRole === r.id ? 'white' : r.color,
-                    cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, transition: 'all 0.2s'
-                  }}
-                >
-                  {r.label}
-                </button>
-              ))}
-            </div>
-            <div className="permissions-list">
-              <PermissionToggle label="View Submissions" initialActive={selectedRole !== 'volunteer'} key={selectedRole + 'a'} delay={0} />
-              <PermissionToggle label="Submit Scores" initialActive={selectedRole === 'lead-judge'} key={selectedRole + 'b'} delay={0.05} />
-              <PermissionToggle label="Manage Members" initialActive={selectedRole === 'lead-judge' || selectedRole === 'organizer'} key={selectedRole + 'c'} delay={0.1} />
-              <PermissionToggle label="Edit Event Rules" initialActive={selectedRole === 'organizer'} key={selectedRole + 'd'} delay={0.15} />
-              <PermissionToggle label="Access Analytics" initialActive={selectedRole === 'organizer' || selectedRole === 'lead-judge'} key={selectedRole + 'e'} delay={0.2} />
-            </div>
-          </div>
-
-          <motion.button
-            className="btn-primary w-full"
-            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '8px', background: saved ? '#10b981' : '' }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleSave}
+      {/* Segmented Tab Control */}
+      <div className="segmented-control-wrapper">
+        <div className="segmented-control">
+          <button
+            className={`control-btn ${activeTab === 'roles' ? 'active' : ''}`}
+            onClick={() => setActiveTab('roles')}
           >
-            {saved ? <><CheckCircle2 size={18} /> Saved!</> : <><UserCog size={18} /> Save Role Config</>}
-          </motion.button>
-        </motion.div>
+            <Shield size={16} />
+            <span>Role Manager</span>
+            {activeTab === 'roles' && (
+              <motion.div className="active-bg" layoutId="activeTabBg" transition={{ type: "spring", stiffness: 380, damping: 30 }} />
+            )}
+          </button>
+          <button
+            className={`control-btn ${activeTab === 'tasks' ? 'active' : ''}`}
+            onClick={() => setActiveTab('tasks')}
+          >
+            <CheckSquare size={16} />
+            <span>Task Board</span>
+            {activeTab === 'tasks' && (
+              <motion.div className="active-bg" layoutId="activeTabBg" transition={{ type: "spring", stiffness: 380, damping: 30 }} />
+            )}
+          </button>
+        </div>
+      </div>
 
-        {/* Kanban Board */}
-        <motion.div
-          className="glass-panel kanban-board"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3><CheckSquare size={20} /> Task Board</h3>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <input
-                value={newTask}
-                onChange={e => setNewTask(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && addTask()}
-                placeholder="New task..."
-                style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem', width: '160px' }}
-              />
-              <select
-                value={newAssignee}
-                onChange={e => setNewAssignee(e.target.value)}
-                style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'rgba(0,0,0,0.5)', color: 'white', fontSize: '0.85rem' }}
-              >
-                {members.map(m => <option key={m.id}>{m.name}</option>)}
-              </select>
-              <button onClick={addTask} className="btn-primary" style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem' }}>
-                <Plus size={14} /> Add
+      <AnimatePresence mode="wait">
+        {activeTab === 'roles' ? (
+          <motion.div
+            key="roles"
+            className="rt-layout-container"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Left side: Team Members Table */}
+            <div className="roles-main-panel glass-panel">
+              <div className="panel-header-section">
+                <div className="panel-title">
+                  <User size={18} className="title-icon" />
+                  <h2>Team Members</h2>
+                </div>
+                <p className="panel-subtitle">Assign system roles and configure baseline authorization levels.</p>
+              </div>
+
+              <div className="clean-table-wrapper">
+                <table className="clean-member-table">
+                  <thead>
+                    <tr>
+                      <th className="th-name">Member</th>
+                      <th className="th-email">Email</th>
+                      <th className="th-role">Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {members.map((m, i) => (
+                      <motion.tr
+                        key={m.id}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                      >
+                        <td className="td-name">
+                          <div className="member-info">
+                            <div className="member-avatar">{m.name.split(' ').map(n => n[0]).join('')}</div>
+                            <span className="member-fullname">{m.name}</span>
+                          </div>
+                        </td>
+                        <td className="td-email">{m.email}</td>
+                        <td className="td-role">
+                          <select
+                            className="role-select"
+                            value={m.roleId}
+                            onChange={e => assignRole(m.id, e.target.value)}
+                          >
+                            {ROLES.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}
+                          </select>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Right side: Permissions Matrix */}
+            <div className="roles-side-panel glass-panel">
+              <div className="panel-header-section">
+                <div className="panel-title">
+                  <Key size={18} className="title-icon" />
+                  <h2>Role Permissions</h2>
+                </div>
+                <p className="panel-subtitle">Select a role to configure granular platform feature flags.</p>
+              </div>
+
+              {/* Sub-tabs for role selection */}
+              <div className="role-subtabs">
+                {ROLES.map(r => (
+                  <button
+                    key={r.id}
+                    className={`role-subtab-btn ${selectedRole === r.id ? 'active' : ''}`}
+                    onClick={() => setSelectedRole(r.id)}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="permissions-matrix">
+                {PERMISSIONS.map(p => {
+                  const isEnabled = hasPerm(selectedRole, p.key)
+                  return (
+                    <div
+                      key={p.key}
+                      className={`permission-row-item ${isEnabled ? 'enabled' : 'disabled'}`}
+                      onClick={() => togglePerm(selectedRole, p.key)}
+                    >
+                      <div className="permission-info-cell">
+                        <span className="permission-name-label">{p.label}</span>
+                        <span className="permission-desc-label">{p.description}</span>
+                      </div>
+                      <div className={`switch-toggle-outer ${isEnabled ? 'active' : ''}`}>
+                        <motion.div
+                          className="switch-toggle-knob"
+                          animate={{ x: isEnabled ? 16 : 0 }}
+                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="panel-action-footer">
+                <motion.button
+                  className={`btn-primary save-btn-full ${saved ? 'saved' : ''}`}
+                  onClick={handleSave}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {saved ? <><CheckCircle2 size={16} /> Configuration Saved</> : <><UserCog size={16} /> Save Changes</>}
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="tasks"
+            className="tasks-layout-container glass-panel"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="panel-header-section padding-x-y">
+              <div className="panel-title">
+                <CheckSquare size={18} className="title-icon" />
+                <h2>Task Board</h2>
+              </div>
+              <p className="panel-subtitle">Delegate tasks to team members and track sprint progress.</p>
+            </div>
+
+            {/* Quick Add Bar */}
+            <div className="sprint-add-task-bar">
+              <div className="input-group-field">
+                <input
+                  className="task-input-field"
+                  value={newTask}
+                  onChange={e => setNewTask(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addTask()}
+                  placeholder="What needs to be done? Enter task..."
+                />
+              </div>
+              <div className="select-assignee-group">
+                <label className="input-label-tag">Assignee:</label>
+                <select
+                  className="role-select"
+                  value={newAssignee}
+                  onChange={e => setNewAssignee(e.target.value)}
+                >
+                  {members.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
+                </select>
+              </div>
+              <button className="btn-primary sprint-add-btn" onClick={addTask}>
+                <Plus size={16} />
+                <span>Add Task</span>
               </button>
             </div>
-          </div>
 
-          <div className="kanban-columns">
-            {[
-              { id: 'todo', label: 'To Do', color: '#6366f1' },
-              { id: 'inprogress', label: 'In Progress', color: '#f59e0b' },
-              { id: 'done', label: 'Done', color: '#10b981' },
-            ].map(col => (
-              <div className="kanban-col" key={col.id}>
-                <h4 style={{ color: col.color }}>{col.label} <span style={{ background: col.color + '22', color: col.color, borderRadius: '10px', padding: '2px 8px', fontSize: '0.8rem' }}>{tasksByStatus(col.id).length}</span></h4>
-                <AnimatePresence>
-                  {tasksByStatus(col.id).map(task => (
-                    <motion.div
-                      key={task.id}
-                      className="task-card"
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      drag="y"
-                      dragConstraints={{ top: 0, bottom: 0 }}
-                      dragElastic={0.5}
-                      whileDrag={{ scale: 1.05, zIndex: 50, boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}
-                    >
-                      <div className="task-drag-handle"><GripVertical size={14} /></div>
-                      <div className="task-content">
-                        <div className="task-title">{task.title}</div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-                          <div className="task-assignee" style={{ color: roleColors[members.find(m => m.name === task.assignee)?.roleId || ''] || 'var(--text-secondary)' }}>
-                            <div className="avatar-small" style={{ background: roleColors[members.find(m => m.name === task.assignee)?.roleId || ''] }} /> {task.assignee}
-                          </div>
-                          <div style={{ display: 'flex', gap: '4px' }}>
-                            {col.id !== 'todo' && <button onClick={() => moveTask(task.id, col.id === 'inprogress' ? 'todo' : 'inprogress')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.7rem' }}>←</button>}
-                            {col.id !== 'done' && <button onClick={() => moveTask(task.id, col.id === 'todo' ? 'inprogress' : 'done')} style={{ background: 'none', border: 'none', color: col.color, cursor: 'pointer', fontSize: '0.7rem' }}>→</button>}
-                            <button onClick={() => deleteTask(task.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}><Trash2 size={12} /></button>
-                          </div>
-                        </div>
+            {/* Columns Grid */}
+            <div className="sprint-kanban-grid">
+              {COLUMNS.map(col => (
+                <div key={col.id} className="sprint-column-panel">
+                  <div className={`sprint-column-header col-accent-${col.id}`}>
+                    <div className="column-title-label">
+                      <span className="dot-indicator" />
+                      <h3>{col.label}</h3>
+                    </div>
+                    <span className="task-count-badge">{tasksByStatus(col.id).length}</span>
+                  </div>
+
+                  <div className="sprint-cards-container">
+                    <AnimatePresence>
+                      {tasksByStatus(col.id).map(task => {
+                        const prev = COLUMNS[COLUMNS.findIndex(c => c.id === col.id) - 1]?.id
+                        const next = COLUMNS[COLUMNS.findIndex(c => c.id === col.id) + 1]?.id
+                        return (
+                          <motion.div
+                            key={task.id}
+                            className="sprint-task-card"
+                            layout
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <p className="sprint-card-title">{task.title}</p>
+                            <div className="sprint-card-footer">
+                              <div className="sprint-card-assignee">
+                                <div className="member-avatar sm">{task.assignee.split(' ').map(n => n[0]).join('')}</div>
+                                <span className="assignee-name">{task.assignee}</span>
+                              </div>
+                              <div className="sprint-card-actions">
+                                {prev && (
+                                  <button className="sprint-action-btn" onClick={() => moveTask(task.id, prev)} title={`Move to ${prev}`}>
+                                    ←
+                                  </button>
+                                )}
+                                {next && (
+                                  <button className="sprint-action-btn fwd" onClick={() => moveTask(task.id, next)} title={`Move to ${next}`}>
+                                    <ChevronRight size={14} />
+                                  </button>
+                                )}
+                                <button className="sprint-action-btn del" onClick={() => deleteTask(task.id)} title="Delete Task">
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      })}
+                    </AnimatePresence>
+
+                    {tasksByStatus(col.id).length === 0 && (
+                      <div className="column-empty-state">
+                        <span>No tasks in this column</span>
                       </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  )
-}
-
-function PermissionToggle({ label, initialActive, delay }: any) {
-  const [active, setActive] = useState(initialActive)
-  return (
-    <motion.div
-      className="permission-row"
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay }}
-      onClick={() => setActive(!active)}
-      style={{ cursor: 'pointer' }}
-      whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-    >
-      <span>{label}</span>
-      <div className={`toggle-switch ${active ? 'active' : ''}`}>
-        <motion.div
-          className="toggle-knob"
-          initial={false}
-          animate={{ x: active ? 20 : 0 }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        />
-      </div>
-    </motion.div>
   )
 }
