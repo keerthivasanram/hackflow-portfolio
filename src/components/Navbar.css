@@ -21,6 +21,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 32px;
+  position: relative;
 }
 
 /* Logo */
@@ -87,8 +88,100 @@
   font-size: 0.875rem !important;
 }
 
-/* Mobile: hide middle links */
-@media (max-width: 900px) {
-  .nav-links { display: none; }
-  .navbar-inner { padding: 0 20px; }
+/* Mobile menu toggle button */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile Menu Drawer styling */
+.mobile-drawer {
+  position: absolute;
+  top: var(--navbar-h);
+  left: 0;
+  right: 0;
+  background: rgba(7, 8, 10, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 199;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-drawer-link {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.mobile-drawer-link:hover,
+.mobile-drawer-link.active {
+  color: white;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mobile-drawer-link.active {
+  border-left: 2px solid var(--accent-primary);
+  padding-left: 12px;
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.mobile-drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 20px;
+}
+
+.mobile-action-btn {
+  width: 100%;
+  padding: 12px !important;
+  font-size: 0.95rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 960px) {
+  .nav-links,
+  .nav-actions {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .navbar-inner {
+    padding: 0 20px;
+  }
 }

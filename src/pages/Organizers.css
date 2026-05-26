@@ -21,10 +21,11 @@
   margin: 0 auto;
 }
 
+/* Responsive UI Container */
 .virtual-ui-container {
   display: flex;
   gap: 24px;
-  height: 600px;
+  min-height: 540px;
 }
 
 .virtual-sidebar {
@@ -118,4 +119,79 @@
 .mock-btn {
   align-self: flex-start;
   margin-top: 16px;
+}
+
+/* ── Responsive Styling ── */
+@media (max-width: 1024px) {
+  .virtual-ui-container {
+    flex-direction: column;
+    min-height: auto;
+  }
+  
+  .virtual-sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .sidebar-item {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 32px 16px;
+  }
+  
+  .page-header {
+    margin-bottom: 36px;
+  }
+  
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+  
+  .virtual-sidebar {
+    flex-direction: column;
+    padding: 16px 12px;
+  }
+  
+  .sidebar-item {
+    width: 100%;
+  }
+
+  .virtual-dashboard {
+    padding: 28px 20px;
+  }
+  
+  .virtual-dashboard h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+  
+  .mock-form {
+    gap: 16px;
+  }
+  
+  .mock-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .mock-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
 }
